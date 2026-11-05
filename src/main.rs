@@ -18,6 +18,9 @@ struct Args {
 }
 
 fn main() {
+    let measurement_start = profiler::read_tsc();
+    let measurement_end = profiler::read_tsc();
+
     let total_start = profiler::read_tsc();
 
     let args = Args::parse();
@@ -53,6 +56,9 @@ fn main() {
 
     let tsc_hz = profiler::tsc_frequency_calibrated();
 
+    let measurment_ticks = measurement_end - measurement_start;
+    let measurment_ns = profiler::ticks_to_ns(measurment_ticks, tsc_hz);
+
     let total = profiler::ticks_to_ns(total_end - total_start, tsc_hz);
     let read = profiler::ticks_to_ns(read_end - read_start, tsc_hz);
     let parse = profiler::ticks_to_ns(parse_end - parse_start, tsc_hz);
@@ -60,6 +66,7 @@ fn main() {
 
     println!("");
     println!("CPU frequency: {} MHz", tsc_hz / 1_000_000);
+    println!("Measurement overhead: {} ticks ({} ns)", measurment_ticks, measurment_ns);
     println!("Total time: {} ms", total / 1_000_000);
     println!("  Read: {} ms ({:.2}%)", read / 1_000_000, (read as f64 / total as f64) * 100.0);
     println!("  Parse: {} ms ({:.2}%)", parse / 1_000_000, (parse as f64 / total as f64) * 100.0);
