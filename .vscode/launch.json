@@ -1,0 +1,32 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Debug executable 'haversine-distance'",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "args": [
+                    "run",
+                    "--bin=haversine-distance"
+                ]
+            },
+            "args": ["../coordinates-generator/data_1000000.json", "../coordinates-generator/data_10000000_haveranswer.f64"]
+        },
+        {
+            "name": "Debug unit tests in executable 'haversine-distance'",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--bin=haversine-distance"
+                ]
+            }
+        }
+    ]
+}
