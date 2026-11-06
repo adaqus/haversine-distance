@@ -1,8 +1,21 @@
 use std::{
     arch::x86_64::{_mm_lfence, _rdtsc},
+    collections::HashMap,
     thread,
     time::{Duration, Instant},
 };
+
+thread_local! {
+    pub static PROFILE_DATA: std::cell::RefCell<HashMap<String, u64>> = std::cell::RefCell::new(HashMap::new());
+}
+
+pub fn store_profile_data(key: String, delta: u64) {
+    PROFILE_DATA.with(|data| {
+        let mut data = data.borrow_mut();
+        let entry = data.entry(key).or_insert(0);
+        *entry += delta;
+    });
+}
 
 #[inline]
 pub fn read_tsc() -> u64 {
